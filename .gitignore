@@ -1,0 +1,485 @@
+
+st1 = 0
+th2 = 0
+th3 = 0
+tempo = 0
+space1X = 0;
+  space1Y = -400;
+  space2X = 0;
+  space2Y = 0;
+  navex = 200;
+  navey = 350;
+  var mouseX;
+  var mouseY;
+ shot = false;
+  shoty = [];
+  shotx = [];
+  tela = "telainicial"
+ let imagemalien = [];
+let aliens = [
+  { id: 0, image: "alien1.png", x: 25, y: -50, velocidade: 4.6, vivo: true },
+  { id: 1, image: "alien2.png", x: 185, y: -50, velocidade: 2.6, vivo: true },
+  { id: 2, image: "alien3.png", x: 255, y: -50, velocidade: 5, vivo: true },
+  { id: 3, image: "alien1.png", x: 350, y: -50, velocidade: 2.2, vivo: true },
+  { id: 4, image: "alien5.png", x: 95, y: -50, velocidade: 4.8, vivo: true },
+  { id: 5, image: "alien4.png", x: 305, y: -50, velocidade: 1.9, vivo: true }
+];
+
+function preload(){
+  space = loadImage('space.png');
+  foto = loadImage('creditos/foto rumeninho.jpeg')
+  fotoeu = loadImage('creditos/foto eu.jpeg')
+  nave = loadImage('imagens/ship.png');
+  for (let alien of aliens) {
+    imagemalien.push(loadImage('imagens/' + alien.image));
+  }
+  teme = createAudio('musicas/musicteme.mp3');
+  teme.loop();
+  effect = createAudio('musicas/gosong.mp3');
+  tiro = createAudio('musicas/shoothing.mp3')
+}
+function setup() {
+  createCanvas(400, 400);
+  scores = [];
+}
+
+function draw() {
+  
+  
+  if(tela === "telainicial"){
+  image(space, space1X, space1Y, width, height, 0, 0, space.width, space.height);
+  image(space, space2X, space2Y, width, height, 0, 0, space.width, space.height);
+  space1Y += 8
+  space2Y += 8
+    
+    
+  //TITULO
+  textAlign(CENTER)
+  textSize(50)
+  text("JALAGA", 200,170 )
+  fill('white')
+  
+  if(space1Y>400){
+    space1Y = -400
+  }
+  if(space2Y>400){
+    space2Y = -400
+  }
+  
+  //START
+    if(mouseX> 150 && mouseX<300 && mouseY>220 && mouseY<240){
+       fill("rgb(0,255,0)")
+    }
+    textAlign(CENTER)
+   textSize(12)
+   text("START", 200,230 )
+    
+   fill('white')
+  
+  //COMO JOGAR
+    if(mouseX> 150 && mouseX<300 && mouseY>240 && mouseY<260){
+       fill("rgb(0,255,0)")
+    }
+   textAlign(CENTER)
+  textSize(12)
+  text("COMO JOGAR", 200,250 )
+  fill('white')
+  
+  //CREDITOS
+    if(mouseX> 150 && mouseX<300 && mouseY>260 && mouseY<270){
+       fill("rgb(0,255,0)")
+    }
+  textAlign(CENTER)
+  textSize(12)
+  text("CREDITOS", 200,270 )
+  fill('white')
+    
+    //HISTORIA
+  if(mouseX> 150 && mouseX<300 && mouseY>270 && mouseY<290){
+       fill("rgb(0,255,0)")
+    }
+   textAlign(CENTER)
+  textSize(12)
+  text("HISTORIA", 200,290 )
+  fill('white')
+  }
+  
+  
+
+  
+  //TELAS
+  if(tela === "comojogar"){
+    comojogar();
+  }
+  if(tela === "creditos"){
+    creditos();
+  }
+  if(tela === "start"){
+    start();
+  }
+  if(tela === 'gameover'){
+    gameover();
+  }
+  if(tela === 'historia'){
+    historia();
+  }
+}
+function mouseClicked() {
+  
+ if(tela === 'telainicial'){
+  if (mouseX> 150 && mouseX<300 && mouseY>220 && mouseY<240) { //start
+      tempoOff = millis()/1000;
+      tela = "start" 
+      teme.stop();
+    teme.loop();
+    
+  }
+ if (mouseX > 150 && mouseX<300 && mouseY>240 && mouseY<270) { //como jogar
+      tela = "comojogar"
+ }
+   if (mouseX> 150 && mouseX<300 && mouseY>260 && mouseY<270) { //como jogar
+      tela = "creditos"
+   //codigo de ceditos
+  }
+   if (mouseX> 150 && mouseX<300 && mouseY>280 && mouseY<290) { //como jogar
+      tela = "historia"
+   //codigo de ceditos
+  }
+ }
+  if(tela === 'comojogar'){
+ if(mouseX> 200 && mouseX<300 && mouseY>320 && mouseY<370){
+       tela = "telainicial";
+    }
+  }
+  if(tela === 'creditos'){
+ if(mouseX> 200 && mouseX<300 && mouseY>320 && mouseY<370){
+       tela = "telainicial";
+    }
+  }
+  if(tela === 'gameover'){
+ if(mouseX> 0 && mouseX<400 && mouseY>0 && mouseY<400){
+       tela = "telainicial";
+       effect.stop();
+       teme.loop();
+    }
+  }
+  if(tela === 'historia'){
+ if(mouseX> 200 && mouseX<300 && mouseY>320 && mouseY<370){
+       tela = "telainicial";
+    }
+  }
+}
+
+function comojogar(){
+    image(space, space1X, space1Y, width, height, 0, 0, space.width, space.height);
+  image(space, space2X, space2Y, width, height, 0, 0, space.width, space.height);
+  space1Y += 8
+  space2Y += 8
+  
+  if(space1Y>400){
+    space1Y = -400
+  }
+  if(space2Y>400){
+    space2Y = -400
+  }
+  push();
+    textAlign(LEFT); 
+    fill('white')
+    textSize(12)
+    text("CONTROLES:"  , 50,90, )
+    text("Use as setas do teclado para mover a nave para a direita \ne esqueda \nAperte a barra de espaço para atirar com a nave \ne destruir os aliens"  , 50,110, )
+    
+    text("OBJETIVO:"  , 50,200, )
+    text("Eliminar os aliens \nSobreviver o máximo de tempo possível \nDesvie dos aliens para não morrer"  , 50,220, )
+    
+  pop();
+   if(mouseX> 230 && mouseX<270 && mouseY>340 && mouseY<360){
+       fill("rgb(0,255,0)")
+    }
+  push();
+    textAlign(CENTER)
+    textSize(12)
+    text("BACK", 250,350 )
+  pop();
+}
+function creditos(){
+   if(tela === "creditos"){
+  image(foto, space1X, space1Y, width, height, 0, 0, foto.width, space.height);
+  image(fotoeu, space2X, space2Y, width, height, 0, 0, fotoeu.width, fotoeu.height);
+  space1Y += 4
+  space2Y += 4
+  
+  if(space1Y>400){
+    space1Y = -400
+  }
+  if(space2Y>400){
+    space2Y = -400
+  }
+    
+  //texto
+    textAlign(CENTER);
+      fill('rgb(255,0,233)')
+   textSize(30); 
+    text("CREDITOS:"  , 200,90,  )
+    text("MATEUS LIMA"  , 200,150, )
+    text("DÉBORA RODRIGUES"  , 200,120, )
+    text("THALLES MAIA"  , 200,180, )
+    text("RUMMENIGGE DANTAS"  , 200,210, )
+    text("EDSON MAIA"  , 200,240, )
+     if(mouseX> 180 && mouseX<320 && mouseY>300 && mouseY<360){
+       fill("rgb(0,255,0)")
+    }
+    textAlign(CENTER); 
+    textSize(50);
+     push();
+    text("BACK", 250,350 );
+    textStyle(BOLD)
+    textFont('Stencil') 
+    pop();
+}
+}
+function start(){
+  if(tela === 'start'){
+  image(space, space1X, space1Y, width, height);
+  image(space, space2X, space2Y, width, height);
+  push();
+    fill('white');
+    tempo = round(millis()/1000 - tempoOff, 1);
+    text("TIME: " +tempo, 300, 30);
+  pop();
+  space1Y += 8
+  space2Y += 8
+  
+  if(space1Y>400){
+    space1Y = -400
+    
+  }
+  if(space2Y>400){
+    space2Y = -400
+  }
+  }
+  
+  image(nave, navex, navey, 30, 30);
+  movernave();
+  
+  desenharalien();
+  moveralien();
+  
+  // Atualizar tiros
+  for (let i = 0; i < shotx.length; i++) {
+    push();
+    fill("rgb(0,255,0)");
+    circle(shotx[i], shoty[i], 7);
+    shoty[i] -= 7; // Ajusta a velocidade do tiro
+    if (shoty[i] < 0) {
+      shotx.splice(i, 1); // Remove o tiro da posição i
+      shoty.splice(i, 1);
+      i--; // Ajusta o índice após a remoção
+    pop();
+    }
+  }
+  
+  // Verificar colisão entre tiros e alienígenas
+  for (let i = 0; i < shotx.length; i++) {
+    for (let j = 0; j < aliens.length; j++) { 
+      if (aliens[j].vivo && collidewhith(shotx[i], shoty[i], aliens[j])) { 
+        aliens[j].y = -20; // Move o alienígena para fora da tela
+        aliens[j].x = random(0, 400); // Move o alienígena para uma nova posição
+        shotx.splice(i, 1); // Remove o tiro da posição i
+        shoty.splice(i, 1);
+        i--; // Ajusta o índice após a remoção
+         tiro.play();
+        break; // Para evitar verificar o mesmo tiro com outros alienígenas
+       
+      }
+    }
+  }
+  
+  // Verificar colisão entre alienígenas e a nave
+  for (let i = 0; i < aliens.length; i++) {
+    if (aliens[i].vivo && collidewhithship(navex, navey, aliens[i])) {
+      placar();
+      tela = "gameover"; // Transição para a tela inicial ou fim de jogo
+      scores.push(tempo+" Segundos");
+      aliens[0].y = -50; aliens[0].x = 25
+      aliens[1].y = -50; aliens[1].x = 185
+      aliens[2].y = -50; aliens[2].x = 255
+      aliens[3].y = -50; aliens[3].x = 350
+      aliens[4].y = -50; aliens[4].x = 95
+      aliens[5].y = -50; aliens[5].x = 305
+      navex = 200
+      shoty = [];
+      shotx = [];
+      
+      break; // Para evitar múltiplas transições de tela
+    }
+  }
+}
+function gameover(){
+  if(tela === 'gameover'){ 
+  image(space, space1X, space1Y, width, height, 0, 0, space.width, space.height);
+  image(space, space2X, space2Y, width, height, 0, 0, space.width, space.height);
+  space1Y += 8
+  space2Y += 8
+  
+  if(space1Y>400){
+    space1Y = -400
+  }
+  if(space2Y>400){
+    space2Y = -400
+  }
+} 
+  teme.stop();
+  effect.loop();
+  push();
+  textAlign(CENTER)
+  textSize(50)
+  textFont('Helvetica')
+  text('GAME OVER', 200, 110)
+  textSize(15)
+  text('(clique em qualquer lugar para voltar a tela inicial)', 200, 140)
+  pop();
+  push();
+  fill('white')
+  rect(140,170,120,40)
+  rect(140,220,120,40)
+  rect(140,270,120,40)
+  pop();
+ push();
+  fill('black')
+  rect(145,175,110,30)
+  rect(145,225,110,30)
+  rect(145,275,110,30)
+  
+   textSize(20)
+   fill('white')
+  text('1st ' + st1, 200, 197)
+  text('2th '+ th2, 200, 247)
+  text('3th '+ th3, 200, 297)
+  pop(); 
+ 
+  
+  
+}
+function historia(){
+  if(tela === 'historia'){ 
+  image(space, space1X, space1Y, width, height, 0, 0, space.width, space.height);
+  image(space, space2X, space2Y, width, height, 0, 0, space.width, space.height);
+  space1Y += 8
+  space2Y += 8
+  
+  if(space1Y>400){
+    space1Y = -400
+  }
+  if(space2Y>400){
+    space2Y = -400
+  }
+     push();
+  textSize(15)
+  text('Bem vindo querido viajante!\nBem-vindo à sua jornada pelo universo!\n 🌌 Você vai explorar estrelas, planetas e galáxias,\n encontrando alienígenas—seres de outros mundos \nque podem ser seus inimigos em algumas missões. \nAlienígenas são criaturas que vivem em planetas \ndiferentes do nosso, e muitas vezes têm formas e \nhabilidades desconhecidas. \nEsta aventura é uma chance de aprender sobre \no cosmos, desenvolver habilidades científicas e ver \ncomo a tecnologia nos ajuda a \ndesvendar os mistérios do espaço. \nPrepare-se para uma emocionante \n aventura enfrentando alienígenas! 🚀✨', 200, 80)
+  pop();
+    
+}
+  push();
+   if(mouseX> 230 && mouseX<270 && mouseY>340 && mouseY<360){
+       fill("rgb(0,255,0)")
+    }
+  
+    textAlign(CENTER)
+    textSize(12)
+    text("BACK", 250,350 )
+  pop();
+ 
+}
+
+function movernave() {
+  if (keyIsDown(RIGHT_ARROW)) {
+    navex += 4;
+    if (navex > width) {
+      navex = 0;
+    }
+  }
+  if (keyIsDown(LEFT_ARROW)) {
+    navex -= 4;
+    if (navex < 0) {
+      navex = width;
+    }
+  }
+}
+
+function keyPressed() {
+  if (key === " ") {
+    shotx.push(navex + 15); // O tiro nasce na posição da nave
+    shoty.push(navey);
+    shot = true; // Marca que um tiro foi disparado
+  }
+}
+
+function desenharalien() {
+  for (let i = 0; i < aliens.length; i++) { 
+    if (aliens[i].vivo) { // Desenha apenas alienígenas vivos
+      image(imagemalien[aliens[i].id], aliens[i].x, aliens[i].y, 30, 30);
+    }
+  }
+}
+
+function moveralien() {
+  for (let i = 0; i < aliens.length; i++) {
+    if (aliens[i].vivo) { // Move apenas alienígenas vivos
+      if (aliens[i].y <= height) {
+        aliens[i].y += aliens[i].velocidade;
+       if(i%2==0){
+        aliens[i].x += 3;
+       }
+      } else {
+        aliens[i].y = -30;
+        aliens[i].x += random(0, 400);
+      }
+      if (aliens[i].x > width) {
+        aliens[i].x = 0;
+      }
+    }
+  }
+}
+
+function collidewhith(projX, projY, alien) {
+  let alienX1 = alien.x;
+  let alienX2 = alien.x + 30;
+  let alienY1 = alien.y;
+  let alienY2 = alien.y + 30;
+  let projX1 = projX - 7; // O raio do tiro é 7
+  let projX2 = projX + 7;
+  let projY1 = projY - 7;
+  let projY2 = projY + 7;
+
+  return projX2 > alienX1 && projX1 < alienX2 && projY2 > alienY1 && projY1 < alienY2;
+}
+
+function collidewhithship(navex, navey, alien) {
+  let alienX1 = alien.x;
+  let alienX2 = alien.x;
+  let alienY1 = alien.y ;
+  let alienY2 = alien.y;
+  let navex1 = navex - 30; // O raio do tiro é 7
+  let navex2 = navex + 30;
+  let navey1 = navey - 30;
+  let navey2 = navey + 30;
+
+  return navex2 > alienX1 && navex1 < alienX2 && navey2 > alienY1 && navey1 < alienY2;
+}
+
+function placar(){
+  if(tempo>st1){
+    th2 = st1
+    th3 = th2
+    st1 = tempo
+  }
+  else if(tempo<st1 && tempo>th3 && tempo>th2){
+    th3 = th2
+    th2 = tempo
+  }
+  else if(tempo<st1 && tempo<th2 && tempo>th3){
+    th3 = tempo
+  }
+}
+
